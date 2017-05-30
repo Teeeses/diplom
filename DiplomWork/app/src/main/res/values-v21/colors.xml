@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red">#ff0000</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="green">#007B25</color>
+    <color name="green_light">#73FFEC</color>
+    <color name="grey_text">#7D7D7D</color>
+    <color name="grey">#DCDCDC</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#173e63</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentLight">#fef4f7</color>
+
+    <color name="keyboard_number">#424242</color>
+    <color name="grayText">#626971</color>
+
+    <color name="pbx_tickets_info">#173e63</color>
+    <color name="passenger_tickets_info">#9370D8</color>
+</resources>

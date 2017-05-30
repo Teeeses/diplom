@@ -100,6 +100,7 @@ public class CNNdroid {
                 str = str.substring(15);
                 String fName = deriveStr(str);
                 File pf = new File(root + fName);
+                Log.d("TAG", str + " " + pf.toString());
                 if (pf.exists())
                     paramSize.add(pf.length());
                 else {
