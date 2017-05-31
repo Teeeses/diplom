@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.renderscript.RenderScript;
 import android.util.Log;
@@ -24,8 +25,10 @@ import android.widget.Toast;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import messagepack.ParamUnpacker;
 import network.CNNdroid;
@@ -92,7 +95,7 @@ public class MainActivity extends Activity {
         protected CNNdroid doInBackground(RenderScript... params) {
             loadTime = System.currentTimeMillis();
             try {
-                myConv = new CNNdroid(myRenderScript, "/Removable/MicroSD/Data_Cifar10/Cifar10_def.txt");
+                myConv = new CNNdroid(myRenderScript, "/Removable/MicroSD/data_model/def.txt");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -140,6 +143,8 @@ public class MainActivity extends Activity {
 
     public void makePhoto(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri imageUri = Uri.fromFile(new File("/sdcard/flashCropped.png"));
+        takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, PHOTO_TAKE);
         }
@@ -153,7 +158,7 @@ public class MainActivity extends Activity {
         img.setImageBitmap(bmp1);
 
         ParamUnpacker pu = new ParamUnpacker();
-        float[][][] mean = (float[][][]) pu.unpackerFunction("/Removable/MicroSD/Data_Cifar10/mean.msg", float[][][].class);
+        float[][][] mean = (float[][][]) pu.unpackerFunction("/Removable/MicroSD/data_model/mean.msg", float[][][].class);
 
         for (int j = 0; j < 32; ++j)
             for (int k = 0; k < 32; ++k) {
@@ -185,7 +190,7 @@ public class MainActivity extends Activity {
 
     private void beginCrop(Uri source) {
         Log.d("TAG", getCacheDir().toString());
-        Uri destination = Uri.fromFile(new File("/sdcard/DCIM/Camera", "cropped"));
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
         Crop.of(source, destination).asSquare().start(this);
     }
 
@@ -209,7 +214,7 @@ public class MainActivity extends Activity {
         /*String m_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
         Log.d("TAG", m_path);
         labels = new String[1000];
-        File f = new File("/Removable/MicroSD/Data_Cifar10/labels.txt");
+        File f = new File("/Removable/MicroSD/data_model/labels.txt");
         Scanner s = null;
         int iter = 0;
 
