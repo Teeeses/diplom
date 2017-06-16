@@ -1,10 +1,10 @@
-package layers;
+package com.library.example.cifar10.layers;
 
 
 import android.util.Log;
 
-import messagepack.ParamUnpacker;
-import numdroid.MyNum;
+import com.library.example.cifar10.messagepack.ParamUnpacker;
+import com.library.example.cifar10.numdroid.MyNum;
 
 public class Accuracy implements LayerInterface {
     private String name;                    // name of the layer
@@ -35,7 +35,7 @@ public class Accuracy implements LayerInterface {
         Object output = accuracyLayer((float[][])input, labels, topk);
 
         runTime = System.currentTimeMillis() - runTime;
-        Log.d("CNNdroid","layers." + name + ": Computation Run Time = " + String.valueOf(runTime) + ", Parameters Load Time = " + String.valueOf(loadTime));
+        Log.d("CNNdroid","com.library.example.cifar10.layers." + name + ": Computation Run Time = " + String.valueOf(runTime) + ", Parameters Load Time = " + String.valueOf(loadTime));
 
         return output;
     }

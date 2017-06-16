@@ -1,4 +1,4 @@
-package messagepack;
+package com.library.example.cifar10.messagepack;
 
 import android.util.Log;
 

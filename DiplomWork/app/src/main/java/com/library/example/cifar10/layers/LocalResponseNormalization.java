@@ -1,4 +1,4 @@
-package layers;
+package com.library.example.cifar10.layers;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Scanner;
 
-import numdroid.*;
+import com.library.example.cifar10.numdroid.*;
 
 public class LocalResponseNormalization implements LayerInterface {
 
@@ -68,7 +68,7 @@ public class LocalResponseNormalization implements LayerInterface {
             output = lrnLayerMultithread((float[][][][]) input, localSize, alpha, beta, normRegion, threadCount);
 
         runTime = System.currentTimeMillis() - runTime;
-        Log.d("CNNdroid", "layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
 
         return output;
     }
@@ -164,7 +164,7 @@ public class LocalResponseNormalization implements LayerInterface {
 
     /////////////////////////////////////////Tuning Function////////////////////////////////////////
     private Object tuneFunction(float[][][][] input){
-        Log.d("CNNdroid", "layers." + name + ": Tuning process is starting...");
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Tuning process is starting...");
         long tuneTime = System.currentTimeMillis();
 
         tuneNow = false;
@@ -194,7 +194,7 @@ public class LocalResponseNormalization implements LayerInterface {
 
         writeFile(threadCount);
         tuneTime = System.currentTimeMillis() - tuneTime;
-        Log.d("CNNdroid", "layers." + name + ": Tuning process finished in " + tuneTime + "ms.");
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Tuning process finished in " + tuneTime + "ms.");
         return output;
     }
 

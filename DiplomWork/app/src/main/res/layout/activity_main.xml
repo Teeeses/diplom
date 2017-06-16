@@ -5,7 +5,7 @@
     android:paddingRight="@dimen/standard_margin"
     android:paddingTop="@dimen/standard_margin"
     android:paddingBottom="@dimen/standard_margin"
-    tools:context=".MainActivity"
+    tools:context=".ui.MainActivity"
     android:clickable="true" >
 
 

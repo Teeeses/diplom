@@ -1,4 +1,4 @@
-package numdroid;
+package com.library.example.cifar10.numdroid;
 
 public class MyNum
 {

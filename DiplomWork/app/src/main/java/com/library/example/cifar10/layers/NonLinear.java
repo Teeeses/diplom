@@ -1,4 +1,4 @@
-package layers;
+package com.library.example.cifar10.layers;
 
 
 import android.util.Log;
@@ -34,7 +34,7 @@ public class NonLinear implements LayerInterface {
         }
 
         runTime = System.currentTimeMillis() - runTime;
-        Log.d("CNNdroid", "layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
 
         return output;
     }

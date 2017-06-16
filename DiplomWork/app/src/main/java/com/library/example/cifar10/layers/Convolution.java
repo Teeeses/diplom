@@ -1,4 +1,4 @@
-package layers;
+package com.library.example.cifar10.layers;
 
 
 import android.renderscript.Allocation;
@@ -12,8 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Scanner;
 
-import messagepack.ParamUnpacker;
-import numdroid.MyNum;
+import com.library.example.cifar10.messagepack.ParamUnpacker;
+import com.library.example.cifar10.numdroid.MyNum;
 
 public class Convolution implements LayerInterface {
 
@@ -28,9 +28,9 @@ public class Convolution implements LayerInterface {
     private boolean nonLinear;              // Does a non-linear layer follow this layer?
     private NonLinearType nonLinearType;    // non-linearity type (if applicable)
     private boolean parallel;               // implementation method (parallel or sequential)
-    private boolean loadParamsAtStart;      // if true, layer parameters will be loaded at the construction of network, otherwise the parameters will be loaded in run time
-    private float[][][][] weight;           // weight parameter of network
-    private float[] bias;                   // bias parameter of network
+    private boolean loadParamsAtStart;      // if true, layer parameters will be loaded at the construction of com.library.example.cifar10.network, otherwise the parameters will be loaded in run time
+    private float[][][][] weight;           // weight parameter of com.library.example.cifar10.network
+    private float[] bias;                   // bias parameter of com.library.example.cifar10.network
     private String tuningFolder;            // location to store online tuning results
     private boolean tuneNow;                // flag to weather execute tuning ro not
     private boolean tuneFunc;               // flag of optional tuning function
@@ -95,7 +95,7 @@ public class Convolution implements LayerInterface {
             loadTime = System.currentTimeMillis() - loadTime;
 
             long kernelTime = System.currentTimeMillis();
-            Log.d("CNNdroid", "layers." + name + ": Parameters Load Time in Constructor = " + String.valueOf(loadTime));
+            Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Parameters Load Time in Constructor = " + String.valueOf(loadTime));
 
             if (parallel) {
                 switch (algorithm) {
@@ -125,7 +125,7 @@ public class Convolution implements LayerInterface {
                         break;
                 }
                 kernelTime = System.currentTimeMillis() - kernelTime;
-                Log.d("CNNdroid", "layers." + name + ": Kernel Initialization Time in Constructor = " + String.valueOf(kernelTime));
+                Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Kernel Initialization Time in Constructor = " + String.valueOf(kernelTime));
             }
         }
     }
@@ -175,7 +175,7 @@ public class Convolution implements LayerInterface {
                 }
             }
             loadTime = System.currentTimeMillis() - loadTime;
-            Log.d("CNNdroid", "layers." + name + ": Parameters Load Time = " + String.valueOf(loadTime));
+            Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Parameters Load Time = " + String.valueOf(loadTime));
 
             return invokeFunctions(input, localWeight, localBias, true);
         }
@@ -2039,7 +2039,7 @@ public class Convolution implements LayerInterface {
 
     /////////////////////////////////////////Tuning Function////////////////////////////////////////
     private Object tuneFunction(float[][][][] input) {
-        Log.d("CNNdroid", "layers." + name + ": Tuning process is starting...");
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Tuning process is starting...");
         long tuneTime = System.currentTimeMillis();
 
         Object[] objects = paramUnpacker.unpackerFunction(paramFilePath, new Class[]{float[][][][].class, float[].class});
@@ -2147,7 +2147,7 @@ public class Convolution implements LayerInterface {
             }
         }
         tuneTime = System.currentTimeMillis() - tuneTime;
-        Log.d("CNNdroid", "layers." + name + ": Tuning process finished in " + tuneTime + "ms.");
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Tuning process finished in " + tuneTime + "ms.");
         return output;
     }
 
@@ -2194,7 +2194,7 @@ public class Convolution implements LayerInterface {
         }
 
         runTime = System.currentTimeMillis() - runTime;
-        Log.d("CNNdroid", "layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
 
         return output;
     }

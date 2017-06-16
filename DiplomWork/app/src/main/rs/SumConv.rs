@@ -1,5 +1,5 @@
 #pragma version(1)
-#pragma rs java_package_name(layers)
+#pragma rs java_package_name(com.library.example.cifar10.layers)
 
 rs_allocation frames;
 rs_allocation kernel;

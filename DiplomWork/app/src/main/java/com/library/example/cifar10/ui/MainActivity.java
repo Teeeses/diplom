@@ -1,15 +1,13 @@
-package com.library.example.cifar10;
+package com.library.example.cifar10.ui;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.renderscript.RenderScript;
 import android.util.Log;
@@ -22,16 +20,17 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.library.example.cifar10.adapters.OptionAdapter;
+import com.library.example.cifar10.R;
+import com.library.example.cifar10.beans.ResponseOption;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import messagepack.ParamUnpacker;
-import network.CNNdroid;
+import com.library.example.cifar10.messagepack.ParamUnpacker;
+import com.library.example.cifar10.network.CNNdroid;
 
 import static android.graphics.Color.blue;
 import static android.graphics.Color.green;

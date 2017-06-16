@@ -1,4 +1,4 @@
-package com.library.example.cifar10;
+package com.library.example.cifar10.beans;
 
 /**
  * Created by develop on 30.05.2017.

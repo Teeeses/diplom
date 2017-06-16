@@ -1,8 +1,8 @@
-package layers;
+package com.library.example.cifar10.layers;
 
 import android.util.Log;
 
-import numdroid.MyNum;
+import com.library.example.cifar10.numdroid.MyNum;
 
 public class Softmax implements LayerInterface {
     private String name;                // name of the layer
@@ -25,7 +25,7 @@ public class Softmax implements LayerInterface {
             output = softmaxLayer((float[][]) input);
 
         runTime = System.currentTimeMillis() - runTime;
-        Log.d("CNNdroid", "layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
 
         return output;
     }

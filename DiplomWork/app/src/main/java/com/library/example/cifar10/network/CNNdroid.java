@@ -1,4 +1,4 @@
-package network;
+package com.library.example.cifar10.network;
 
 import android.renderscript.RenderScript;
 import android.util.Log;
@@ -9,28 +9,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-import layers.Accuracy;
-import layers.Convolution;
-import layers.FullyConnected;
-import layers.LayerInterface;
-import layers.LocalResponseNormalization;
-import layers.NonLinear;
-import layers.Pooling;
-import layers.Softmax;
+import com.library.example.cifar10.Utils;
+import com.library.example.cifar10.layers.Accuracy;
+import com.library.example.cifar10.layers.Convolution;
+import com.library.example.cifar10.layers.FullyConnected;
+import com.library.example.cifar10.layers.LayerInterface;
+import com.library.example.cifar10.layers.LocalResponseNormalization;
+import com.library.example.cifar10.layers.NonLinear;
+import com.library.example.cifar10.layers.Pooling;
+import com.library.example.cifar10.layers.Softmax;
 
 public class CNNdroid {
 
-    private static final long MAX_PARAM_SIZE = 419430400;
+    public static final long MAX_PARAM_SIZE = 419430400;
     private static final String tuningFolder = "CNNdroid_Tuning";
 
-    private ArrayList<LayerInterface> layers;   // list of the network layers
+    private ArrayList<LayerInterface> layers;   // list of the com.library.example.cifar10.network com.library.example.cifar10.layers
     private boolean parallel;                   // implementation method (parallel or sequential)
     private boolean autoTuning;                 // auto-tuning (on or off)
     private long allocatedRAM = -1;             // size of RAM allocated to the parameters
     private boolean[] loadtAtStart;             // whether or not the parameters should be loaded at start-up
-    private int layerCounter = 0;               // counter for the layers which have parameters
-    private String rootDir;                     // the root directory of network parameters file
-    private String netStructureFile;            // the directory of the network definition file
+    private int layerCounter = 0;               // counter for the com.library.example.cifar10.layers which have parameters
+    private String rootDir;                     // the root directory of com.library.example.cifar10.network parameters file
+    private String netStructureFile;            // the directory of the com.library.example.cifar10.network definition file
     private RenderScript myRS;                  // RenderScript object
     private LayerInterface lastLayer = null;    // the last constructed layer
     private boolean[] necessaryDefinition;      // execution_mode, auto_tuning
@@ -72,52 +73,30 @@ public class CNNdroid {
         return output;
     }
 
-    // Determine whether or not the parameters should be loaded at start-up.
     private void preParse() throws Exception {
-        File f = new File(netStructureFile);
         List<Long> paramSize = new ArrayList<>();
-        Scanner s;
-        String root = "";
+        String root = "/Removable/MicroSD/data_model/";
+        allocatedRAM =  Utils.getAllocatedRAM(20);
 
-        s = new Scanner(f);
-        while (s.hasNextLine()) {
-            String str = s.nextLine();
-            str = str.trim();
-            String strLow = str.toLowerCase();
-            if (strLow.startsWith("root_directory")) {
-                str = str.substring(14);
-                root = deriveStr(str);
-            }
-            else if (strLow.startsWith("allocated_ram")) {
-                str = str.substring(13);
-                long l = Long.parseLong(deriveNum(str));
-                if (l < MAX_PARAM_SIZE)
-                    allocatedRAM = l * 1024 * 1024;
-                else
-                    allocatedRAM = MAX_PARAM_SIZE;
-            }
-            else if (strLow.startsWith("parameters_file")) {
-                str = str.substring(15);
-                String fName = deriveStr(str);
-                File pf = new File(root + fName);
-                Log.d("TAG", str + " " + pf.toString());
-                if (pf.exists())
-                    paramSize.add(pf.length());
-                else {
-                    Log.d("CNNdroid", "Error: Missing parameters file \"" + str + "\"");
-                    throw new Exception("CNNdroid parameter file does not exist.");
-                }
-            }
-        }
+        File file = new File(root + "model_param_conv1.msg");
+        long length = file.length();
+        paramSize.add(length);
 
-        if (root.equals("")) {
-            Log.d("CNNdroid", "Error: root_directory is not specified in the network structure definition file");
-            throw new Exception("CNNdroid root directory is not specified.");
-        }
-        if (allocatedRAM == -1) {
-            Log.d("CNNdroid", "Error: allocated_ram is not specified in the network structure definition file");
-            throw new Exception("CNNdroid allocated RAM is not specified.");
-        }
+        file = new File(root + "model_param_conv2.msg");
+        length = file.length();
+        paramSize.add(length);
+
+        file = new File(root + "model_param_conv3.msg");
+        length = file.length();
+        paramSize.add(length);
+
+        file = new File(root + "model_param_ip1.msg");
+        length = file.length();
+        paramSize.add(length);
+
+        file = new File(root + "model_param_ip2.msg");
+        length = file.length();
+        paramSize.add(length);
 
         long[] params = longArray(paramSize);
         int[] index = mergeSort(params, 0, params.length - 1);
@@ -131,11 +110,18 @@ public class CNNdroid {
                 loadtAtStart[index[i]] = true;
             }
         }
-
-
     }
 
-    // Parse the network definition file and construct layers.
+    /*
+
+        rootDir = "/Removable/MicroSD/data_model/";
+        //parallel or sequential
+        parallel = true;
+        necessaryDefinition[0] = true;
+        //on or off
+        autoTuning = true;
+        necessaryDefinition[1] = true;
+     */
     private void parse() throws Exception {
         int layerNum = 0;
         File f = new File(netStructureFile);
@@ -150,7 +136,7 @@ public class CNNdroid {
                 str = str.substring(14);
                 str = deriveStr(str);
                 if (str.equals("")) {
-                    Log.d("CNNdroid", "Error: root_directory is not specified correctly in the network structure definition file");
+                    Log.d("CNNdroid", "Error: root_directory is not specified correctly in the com.library.example.cifar10.network structure definition file");
                     throw new Exception("CNNdroid root directory is not specified correctly.");
                 }
                 rootDir = str;
@@ -159,7 +145,7 @@ public class CNNdroid {
                 str = str.substring(13);
                 str = deriveNum(str);
                 if (str.equals("")) {
-                    Log.d("CNNdroid", "Error: allocated_ram is not specified correctly in the network structure definition file");
+                    Log.d("CNNdroid", "Error: allocated_ram is not specified correctly in the com.library.example.cifar10.network structure definition file");
                     throw new Exception("CNNdroid allocated RAM is not specified correctly.");
                 }
             }
@@ -171,7 +157,7 @@ public class CNNdroid {
                 else if (strLow.equals("sequential"))
                     parallel = false;
                 else {
-                    Log.d("CNNdroid", "Error: execution_mode is not specified correctly in the network structure definition file");
+                    Log.d("CNNdroid", "Error: execution_mode is not specified correctly in the com.library.example.cifar10.network structure definition file");
                     throw new Exception("CNNdroid execution mode is not specified correctly.");
                 }
                 necessaryDefinition[0] = true;
@@ -184,7 +170,7 @@ public class CNNdroid {
                 else if (strLow.equals("off"))
                     autoTuning = false;
                 else {
-                    Log.d("CNNdroid", "Error: auto_tuning is not specified correctly in the network structure definition file");
+                    Log.d("CNNdroid", "Error: auto_tuning is not specified correctly in the com.library.example.cifar10.network structure definition file");
                     throw new Exception("CNNdroid auto-tuning is not specified correctly.");
                 }
                 necessaryDefinition[1] = true;
@@ -201,7 +187,7 @@ public class CNNdroid {
                         break;
                 }
                 if (!deriveLayer(str)) {
-                    Log.d("CNNdroid", "Error: Layer number " + layerNum + " is not defined correctly in the network structure definition file");
+                    Log.d("CNNdroid", "Error: Layer number " + layerNum + " is not defined correctly in the com.library.example.cifar10.network structure definition file");
                     throw new Exception("CNNdroid layer number " + layerNum + " is not defined correctly.");
                 }
             }
@@ -209,19 +195,19 @@ public class CNNdroid {
                 continue;
             else
             {
-                Log.d("CNNdroid", "Error in the network structure definition file: " + str);
-                throw new Exception("Error in CNNdroid network structure definition file: " + str);
+                Log.d("CNNdroid", "Error in the com.library.example.cifar10.network structure definition file: " + str);
+                throw new Exception("Error in CNNdroid com.library.example.cifar10.network structure definition file: " + str);
             }
         }
 
         Log.d("#####", "Hello!");
 
         if (!necessaryDefinition[0]) {
-            Log.d("CNNdroid", "Error: execution_mode is not specified in the network structure definition file");
+            Log.d("CNNdroid", "Error: execution_mode is not specified in the com.library.example.cifar10.network structure definition file");
             throw new Exception("CNNdroid execution mode is not specified.");
         }
         if (!necessaryDefinition[1]) {
-            Log.d("CNNdroid", "Error: auto_tuning is not specified in the network structure definition file");
+            Log.d("CNNdroid", "Error: auto_tuning is not specified in the com.library.example.cifar10.network structure definition file");
             throw new Exception("CNNdroid auto-tuning is not specified.");
         }
     }

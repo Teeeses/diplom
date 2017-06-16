@@ -1,4 +1,4 @@
-package layers;
+package com.library.example.cifar10.layers;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Scanner;
 
-import numdroid.MyNum;
+import com.library.example.cifar10.numdroid.MyNum;
 
 public class Pooling implements LayerInterface {
     public final String type = "Pooling";
@@ -82,7 +82,7 @@ public class Pooling implements LayerInterface {
             output = poolLayerMultithread((float[][][][]) input, kernelSize, kernelType, pad, stride, threadCount, nonLinear);
 
         runTime = System.currentTimeMillis() - runTime;
-        Log.d("CNNdroid", "layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Computation Run Time = " + String.valueOf(runTime));
 
         return output;
     }
@@ -212,7 +212,7 @@ public class Pooling implements LayerInterface {
 
     /////////////////////////////////////////Tuning Function////////////////////////////////////////
     private Object tuneFunction(float[][][][] input){
-        Log.d("CNNdroid", "layers." + name + ": Tuning process is starting...");
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Tuning process is starting...");
         long tuneTime = System.currentTimeMillis();
 
         tuneNow = false;
@@ -242,7 +242,7 @@ public class Pooling implements LayerInterface {
 
         writeFile(threadCount);
         tuneTime = System.currentTimeMillis() - tuneTime;
-        Log.d("CNNdroid", "layers." + name + ": Tuning process finished in " + tuneTime + "ms.");
+        Log.d("CNNdroid", "com.library.example.cifar10.layers." + name + ": Tuning process finished in " + tuneTime + "ms.");
         return output;
     }
 
