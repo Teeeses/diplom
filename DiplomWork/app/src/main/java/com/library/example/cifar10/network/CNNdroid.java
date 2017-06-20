@@ -76,27 +76,27 @@ public class CNNdroid {
     private void preParse() throws Exception {
         List<Long> paramSize = new ArrayList<>();
         String root = "/Removable/MicroSD/data_model/";
-        allocatedRAM =  Utils.getAllocatedRAM(20);
+        allocatedRAM =  Utils.getAllocatedRAM(100);
 
         File file = new File(root + "model_param_conv1.msg");
         long length = file.length();
         paramSize.add(length);
 
-        file = new File(root + "model_param_conv2.msg");
+        /*file = new File(root + "model_param_conv2.msg");
         length = file.length();
         paramSize.add(length);
 
         file = new File(root + "model_param_conv3.msg");
         length = file.length();
-        paramSize.add(length);
+        paramSize.add(length);*/
 
         file = new File(root + "model_param_ip1.msg");
         length = file.length();
         paramSize.add(length);
 
-        file = new File(root + "model_param_ip2.msg");
+        /*file = new File(root + "model_param_ip2.msg");
         length = file.length();
-        paramSize.add(length);
+        paramSize.add(length);*/
 
         long[] params = longArray(paramSize);
         int[] index = mergeSort(params, 0, params.length - 1);
